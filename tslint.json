@@ -1,0 +1,47 @@
+{
+  "defaultSeverity": "warning",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "node_modules/**"
+    ]
+  },
+  "rules": {
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double"
+    ],
+    "no-console": [
+      true,
+      "dir",
+      "log",
+      "error",
+      "warn"
+    ],
+    "indent": [true, "spaces", 2],
+    "interface-name": false,
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "no-consecutive-blank-lines": false,
+    "trailing-comma": [true, "never"],
+    "semicolon": [true, "never"],
+    "no-debugger": false,
+    "no-var-requires": true,
+    "no-construct": true,
+    "no-duplicate-super": true,
+    "no-eval": true,
+    "no-misused-new": true,
+    "no-var-keyword": true,
+    "switch-default": true,
+    "triple-equals": [true, "allow-null-check"],
+    "use-isnan": true,
+    "eofline": true,
+    "no-duplicate-imports": true,
+    "no-empty": false,
+    "no-shadowed-variable": false,
+    "arrow-parens": false
+  }
+}
