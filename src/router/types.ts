@@ -1,5 +1,5 @@
-const PREFIX = 'CHAT'
+const PREFIX = 'LESSON'
 
-export const HOME = `${PREFIX}/HOME`
+export const DEMO = `${PREFIX}/DEMO`
 
-export const ABOUT = `${PREFIX}/ABOUT`
+export const FRAME = `${PREFIX}/FRAME`

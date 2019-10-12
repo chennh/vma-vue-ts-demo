@@ -1,6 +1,7 @@
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const {
-  cipher
+  cipher,
+  args
 } = require('vma-vue-assist/dist/static/js/utils')
 
 const config = {
@@ -65,7 +66,10 @@ function getProfile() {
     } catch (ex) {
       argv = process.argv
     }
-    profile = argv[2] || 'production'
+    let argsMap = args(argv.slice(2))
+    if (argsMap.env) {
+      profile = argsMap.env
+    }
   }
   return profile
 }

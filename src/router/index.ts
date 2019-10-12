@@ -8,16 +8,15 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: types.HOME,
-      component: () => import('@/pages/home/index.vue'),
-    },
-    {
-      path: '/about',
-      name: types.ABOUT,
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('@/pages/about.vue'),
+      name: types.FRAME,
+      component: () => import('@/pages/frame/index.vue'),
+      children: [
+        {
+          path: '/demo',
+          name: types.DEMO,
+          component: () => import('@/pages/demo/index.vue'),
+        },
+      ]
     },
   ]
 })

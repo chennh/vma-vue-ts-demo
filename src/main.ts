@@ -4,11 +4,19 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 import { DEBUG_MODE } from './config'
+import plugins from './plugins'
+import * as libComponents from './components/libs'
+import { eachOwn } from '@/utils'
 
 Vue.config.productionTip = DEBUG_MODE
+
+Vue.use(plugins)
+eachOwn(libComponents, (component, name) => {
+  Vue.component(name, component)
+})
 
 new Vue({
   router,
   store,
-  render: (h) => h(App),
+  render: (h: any) => h(App),
 }).$mount('#app')

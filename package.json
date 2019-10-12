@@ -10,8 +10,12 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "crypto-js": "^3.1.9-1",
+    "element-ui": "^2.12.0",
     "register-service-worker": "^1.0.0",
-    "vma-vue-assist": "^1.1.58",
+    "vma-design-scrm": "^1.0.1",
+    "vma-vue-assist": "^1.1.61",
+    "vma-vue-element": "^1.0.29",
     "vue": "^2.5.17",
     "vue-class-component": "^6.0.0",
     "vue-property-decorator": "^7.0.0",
@@ -20,10 +24,10 @@
     "vuex-class": "^0.3.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.0-rc.12",
-    "@vue/cli-plugin-pwa": "^3.0.0-rc.12",
-    "@vue/cli-plugin-typescript": "^3.0.0-rc.12",
-    "@vue/cli-service": "^3.0.0-rc.12",
+    "@vue/cli-plugin-babel": "^3.0.1",
+    "@vue/cli-plugin-pwa": "^3.0.1",
+    "@vue/cli-plugin-typescript": "^3.0.1",
+    "@vue/cli-service": "^3.0.1",
     "compression-webpack-plugin": "^1.1.11",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",

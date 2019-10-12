@@ -1,8 +1,8 @@
 import { VueConstructor } from 'vue'
-import vmaAssist from 'vma-vue-assist'
+import vmaDesignScrm from 'vma-design-scrm'
 
 export default {
   install(Vue: VueConstructor) {
-    Vue.use(vmaAssist as any, {})
+    Vue.use(vmaDesignScrm as any, {})
   }
 }
