@@ -13,6 +13,7 @@
     "strictNullChecks": true,
     "baseUrl": "./",
     "noImplicitThis": true,
+    "skipLibCheck": true,
     "types": [
       "node"
     ],
