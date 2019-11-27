@@ -2,30 +2,55 @@ import { Component, Vue } from 'vue-property-decorator'
 import {
   clearSearch
 } from '@/utils'
-import { Page } from '@/typings'
+import { IPage } from '@/typings'
 
 @Component
-export default class IndexMixin extends Vue {
+export default class IndexMixin<T = any> extends Vue {
+
+  /**
+   * rest api
+   * @protected
+   * @type {*}
+   * @memberOf IndexMixin
+   */
+  public readonly api: any
 
   /**
    * 查询条件
    */
   public params: any = {
-    pageNum: 1,
-    pageSize: 10
+    current: 1,
+    size: 10
+  }
+
+  /**
+   * 日期区间
+   * @memberOf IndexMixin
+   */
+  public dateRange = {
+    params: ''
+  }
+
+  /**
+   * 更多查询条件
+   */
+  public readonly drawer: any = {
+    show: false,
+    active: false
   }
 
   /**
    * 分页
    */
-  public page: any = {
-    totalNum: 0
+  public readonly pageData: any = {
+    total: 0
   }
 
   /**
    * 表格
    */
-  public table: any = {
+  public readonly table: any = {
+    headers: [],
     columns: [],
     list: [],
     selection: []
@@ -34,7 +59,7 @@ export default class IndexMixin extends Vue {
   /**
    * 新增/编辑
    */
-  public form: any = {
+  public readonly form: any = {
     show: false,
     entity: {
       id: ''
@@ -44,13 +69,13 @@ export default class IndexMixin extends Vue {
   /**
    * 详情
    */
-  public detail: any = {
+  public readonly detail: any = {
     show: false,
     index: null,
     entity: null
   }
 
-  public mounted(): void {
+  protected mounted(): void {
     // 初始化服务端数据完成后再执行ready
     new Promise(this.initData).then(() => {
       this.init()
@@ -70,6 +95,7 @@ export default class IndexMixin extends Vue {
    */
   protected init(): void {
     this.initReady()
+    this.search()
   }
 
   /**
@@ -78,18 +104,15 @@ export default class IndexMixin extends Vue {
   protected initReady(): void { }
 
   /**
-   * 提供api
-   */
-  protected getApi(): any {
-    throw new Error('请重写该方法')
-  }
-
-  /**
    * 查询列表，返回promise
    * @param params 列表查询参数
    */
-  protected getApiList(params: any): Promise<Page<any>> {
-    return this.getApi().list(params)
+  protected getApiPage(params: any): Promise<IPage<T>> {
+    return this.api.page(params)
+  }
+
+  protected pageAdaptor(current?: number, size?: number): any {
+    return this.page(current, size)
   }
 
   /**
@@ -101,15 +124,15 @@ export default class IndexMixin extends Vue {
 
   /**
    * 设置列表查询参数的页码/页数
-   * @param pageNum 页码
-   * @param pageSize 页数
+   * @param current 页码
+   * @param size 页数
    */
-  protected setParamsPage(pageNum: number, pageSize?: number): void {
-    if (!isNaN(pageNum)) {
-      this.params.pageNum = pageNum
+  protected setParamsPage(current: number, size?: number): void {
+    if (!isNaN(current)) {
+      this.params.current = current
     }
-    if (pageSize && !isNaN(pageSize)) {
-      this.params.pageSize = pageSize
+    if (size && !isNaN(size)) {
+      this.params.size = size
     }
   }
 
@@ -118,7 +141,17 @@ export default class IndexMixin extends Vue {
    */
   protected search(): void {
     this.table.selection = []
-    this.list(1)
+    this.pageAdaptor(1)
+  }
+
+  /**
+   * 更多条件下查询第一页
+   * @protected
+   * @memberOf IndexMixin
+   */
+  protected searchMore(): void {
+    this.drawer.active = true
+    this.search()
   }
 
   /**
@@ -138,7 +171,18 @@ export default class IndexMixin extends Vue {
     const params = clearSearch(this.params)
     this.afterClearSearch(params)
     this.params = Object.assign(this.params, params)
+    this.drawer.active = false
     this.search()
+  }
+
+  /**
+   * 关闭查询更多条件
+   *
+   * @protected
+   * @memberOf IndexMixin
+   */
+  protected hideSearchMore(): void {
+    this.drawer.show = false
   }
 
   /**
@@ -149,14 +193,14 @@ export default class IndexMixin extends Vue {
 
   /**
    * 执行列表查询
-   * @param pageNum 页码
-   * @param pageSize 页数
+   * @param current 页码
+   * @param size 页数
    */
-  protected list(pageNum: number = this.params.pageNum, pageSize: number = this.params.pageSize): Promise<Page<any>> {
+  protected page(current: number = this.params.current, size: number = this.params.size): Promise<IPage<T>> {
     return new Promise(resolve => {
-      this.setParamsPage(pageNum, pageSize)
+      this.setParamsPage(current, size)
       const params = this.getParams()
-      resolve(this.getApiList(params).then(page => {
+      resolve(this.getApiPage(params).then(page => {
         return this.resolvePage(page, params)
       }))
     })
@@ -166,9 +210,9 @@ export default class IndexMixin extends Vue {
    * 刷新列表并显示详情
    * @param index 显示的详情索引，不传则刷新当前详情
    */
-  protected listAndDetail(index?: number): void {
-    this.list().then(page => {
-      if (page.totalNum === 0) {
+  protected pageAndDetail(index?: number): void {
+    this.page().then(page => {
+      if (page.total === 0) {
         // 总数据为0
         this.detail.entity = null
       } else if (typeof index === 'number') {
@@ -198,13 +242,13 @@ export default class IndexMixin extends Vue {
    * @param page 分页
    * @param params 查询参数
    */
-  protected resolvePage(page: Page<any>, params: any): any {
+  protected resolvePage(page: IPage<T>, params: any): any {
     // 总数据不为0，当前页数据为0，往前跳一页
-    if (page.totalNum > 0 && page.dataList.length === 0) {
-      return this.list(params.pageNum - 1, params.pageSize)
+    if (page.total > 0 && page.records.length === 0) {
+      return this.page(params.current - 1, params.size)
     } else {
-      this.afterList(page.dataList)
-      this.setTable(page.dataList)
+      this.afterPage(page.records)
+      this.setTable(page.records)
       this.setPage(page)
     }
     return page
@@ -214,14 +258,14 @@ export default class IndexMixin extends Vue {
    * 列表完成钩子
    * @param list 列表数据
    */
-  protected afterList(list: any[]): void { }
+  protected afterPage(list: any[]): void { }
 
   /**
    * 设置列表数据
    * @param list 列表数据
    */
   protected setTable(list: any[]): void {
-    if (this.table.selection.length && this.$refs.table) {
+    if (this.table.selection.length) {
       const section: any[] = this.table.selection
       const map: Map<string, any> = new Map<string, any>()
       list.forEach((v) => {
@@ -240,11 +284,33 @@ export default class IndexMixin extends Vue {
   }
 
   /**
+   * 处理表格选中
+   * @protected
+   * @param {any[]} selection
+   * @memberOf IndexMixin
+   */
+  protected handleTableSelectionchange(selection: any[]): void {
+    this.table.selection = selection
+  }
+
+  /**
+   * 清空表格选中项
+   * @protected
+   * @memberOf IndexMixin
+   */
+  protected clearTableSection(): void {
+    this.table.selection = []
+    if (this.$refs.table) {
+      (this.$refs.table as any).clearSelection()
+    }
+  }
+
+  /**
    * 设置分页
    * @param page 分页对象
    */
-  protected setPage(page: Page<any>): void {
-    this.page.totalNum = page.totalNum
+  protected setPage(page: IPage<T>): void {
+    this.pageData.total = page.total
   }
 
   /**
@@ -253,23 +319,44 @@ export default class IndexMixin extends Vue {
    */
   protected showForm(entityOrId?: any): void {
     if (!entityOrId || typeof (entityOrId) === 'object') {
-      this.form.entity = entityOrId || {}
-      this.form.show = true
+      this.showFormEntity(entityOrId)
     } else {
-      this.getApi().get(entityOrId).then((data: any) => {
-        this.form.entity = data
-        this.form.show = true
+      this.api.get({ id: entityOrId }).then((data: any) => {
+        this.showFormEntity(data)
       })
     }
+  }
+
+  protected showFormEntity(entity: any): void {
+    this.form.entity = entity || {}
+    this.form.show = true
+  }
+
+  /**
+   * 关闭新增/编辑页
+   */
+  protected hideForm(): void {
+    this.form.entity = {}
+    this.form.show = false
+  }
+
+  /**
+   * 新增/编辑表单提交
+   *
+   * @protected
+   * @memberOf IndexMixin
+   */
+  protected submitForm(): void {
+    this.hideForm()
   }
 
   /**
    * 新增/编辑成功后钩子
    */
-  protected afterSubmitForm(): void {
+  protected afterSubmitForm(entity: any): void {
     this.form.show = false
-    this.list()
-    // this.success(`${entity.id ? '编辑' : '新增'}成功`)
+    this.pageAdaptor()
+    this.success(`${entity.id ? '编辑' : '新增'}成功`)
   }
 
   /**
@@ -286,7 +373,7 @@ export default class IndexMixin extends Vue {
   protected showDetail(entityOrId: any, index?: number): void {
     this.detail.index = index
     if (typeof entityOrId !== 'object') {
-      this.getApi().get(entityOrId).then((data: any) => {
+      this.api.get({ id: entityOrId }).then((data: any) => {
         this.detail.entity = data || {}
         this.detail.show = true
       })
@@ -302,7 +389,41 @@ export default class IndexMixin extends Vue {
    * @param content 提示文字
    */
   protected showDel(id: any, content: string = '删除操作不可恢复，确认继续删除?'): void {
+    this.$confirm(content, '确认删除?', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      this.api.del({ id, ids: id }).then(() => {
+        this.success('删除成功')
+        this.afterDel()
+      })
+    })
+  }
 
+
+  /**
+   * 批量删除
+   * @protected
+   * @memberOf IndexMixin
+   */
+  protected showBatchDel(): void {
+    if (this.table.selection.length) {
+      const ids = this.table.selection.map((v: any) => v.id)
+      this.showDel(ids, `批量删除 ${ids.length} 条数据？`)
+    } else {
+      this.info('请选择要删除的数据')
+    }
+  }
+
+
+  /**
+   * 删除成功后执行
+   * @protected
+   * @memberOf IndexMixin
+   */
+  protected afterDel(): void {
+    this.pageAdaptor()
   }
 
   /**
@@ -310,10 +431,37 @@ export default class IndexMixin extends Vue {
    * @param data 数据
    * @param label 标题
    */
-  protected update(data: any, label: string): void {
-    this.getApi().update(data).then(() => {
-      // this.success(`${label}成功`)
-      // this.afterUpdateData(data, label)
+  protected update(data: any, label: string = '更新'): void {
+    this.api.update(data).then(() => {
+      this.success(`${label}成功`)
+      this.afterUpdate(data, label)
+    })
+  }
+
+  /**
+   * 更新数据成功后执行
+   * @param {any} data
+   * @param {any} label
+   */
+  protected afterUpdate(data: any, label: string): void {
+    this.pageAdaptor()
+  }
+
+
+  /**
+   * 更新状态
+   * @protected
+   * @param {string} id
+   * @param {number} status
+   * @memberOf IndexMixin
+   */
+  protected updateStatus(id: string, status: number, label?: string) {
+    this.api.updateStatus({
+      id,
+      status
+    }).then(() => {
+      this.success(`${label || (status === 1 ? '启用' : '禁用')}成功`)
+      this.pageAdaptor()
     })
   }
 

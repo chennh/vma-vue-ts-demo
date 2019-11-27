@@ -19,7 +19,8 @@
         <el-form-item>
           <el-button type="primary"
                      @click="search">查询</el-button>
-          <vma-search-more v-model="drawer.show">
+          <vma-search-more v-model="drawer.show"
+                           :badge="drawer.active">
             <el-form size="mini"
                      inline>
               <el-form-item label="审批人">
@@ -37,8 +38,8 @@
               </el-form-item>
               <el-form-item>
                 <el-button type="primary"
-                           @click="search">确定</el-button>
-                <el-button @click="hideSearchMore">取消</el-button>
+                           @click="searchMore">确定</el-button>
+                <el-button @click="clearSearch">清空</el-button>
               </el-form-item>
             </el-form>
           </vma-search-more>
@@ -47,7 +48,9 @@
     </scrm-block>
     <scrm-block class="flex-1">
       <div class="flex flex-column">
-        <scrm-table-tools title="数据列表">
+        <scrm-table-tools title="数据列表"
+                          :count="table.selection.length"
+                          @clear="clearTableSection">
           <el-button size="mini"
                      type="primary"
                      @click="showForm">表单窗口</el-button>
@@ -70,7 +73,11 @@
         <el-table :data="table.list"
                   style="width: 100%"
                   height="100%"
-                  class="scrm-table flex-1">
+                  class="scrm-table flex-1"
+                  @selection-change="handleTableSelectionchange"
+                  ref="table">
+          <el-table-column type="selection"
+                           width="55" />
           <el-table-column prop="date"
                            label="日期"
                            width="180">
@@ -117,17 +124,12 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { mixins } from 'vue-class-component'
+import IndexMixin from '@/mixins/src/indexMixin'
 
 @Component
-export default class Demo extends Vue {
-  private form = {
-    show: false,
-    entity: {
-      user: '',
-      region: ''
-    }
-  }
-  private table = {
+export default class Demo extends mixins(IndexMixin) {
+  public table = {
     list: Array(20)
       .fill(1)
       .map(v => {
@@ -138,27 +140,6 @@ export default class Demo extends Vue {
           address: '上海市普陀区金沙江路 1518 弄'
         }
       })
-  }
-
-  private drawer = {
-    show: false
-  }
-
-  private search() {
-    this.hideSearchMore()
-  }
-
-  private hideSearchMore() {
-    this.drawer.show = false
-  }
-  private submitForm() {
-    this.hideForm()
-  }
-  private showForm() {
-    this.form.show = true
-  }
-  private hideForm() {
-    this.form.show = false
   }
 }
 </script>

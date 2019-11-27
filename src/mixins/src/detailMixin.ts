@@ -1,20 +1,25 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 
 @Component
-export default class FormMixin<T extends object> extends Vue {
+export default class FormMixin extends Vue {
   @Prop({
     default() {
       return {}
     }
   })
-  public data!: T
+  public dataProp: any
 
-  public entity!: T
+  public entity: any = {}
 
   public rules: object = {}
 
-  @Watch('data')
-  protected onDataChange(val: T) {
+  @Watch('dataProp')
+  protected onDataPropChange(val: any) {
+    debugger
+    this.get()
+  }
+
+  protected created(): void {
     this.get()
   }
 
@@ -22,7 +27,7 @@ export default class FormMixin<T extends object> extends Vue {
    * data数据传递
    */
   protected get(): void {
-    this.entity = Object.assign({}, this.entity, this.data)
+    this.entity = Object.assign({}, this.entity, this.dataProp)
     this.afterGet(this.entity)
   }
 
@@ -30,5 +35,5 @@ export default class FormMixin<T extends object> extends Vue {
    * entity赋值后钩子
    * @param entity
    */
-  protected afterGet(entity: T): void { }
+  protected afterGet(entity: any): void { }
 }

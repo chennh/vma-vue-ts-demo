@@ -13,6 +13,7 @@ import {
       keyList()             [Array] key数组
       valueList()           [Array] value数组
       list()                [Array] key-value数组/构造参数是数组时返回valueList
+      map()                 [Array] value-label数组
 
       set(key, value)       [void] 添加数据后，会将该key扩展到当前实例上，即可通过[instance.key]访问该value
  */
@@ -30,3 +31,5 @@ export const LOGIN_TYPE = new Constant({
   // 员工后台/微客服后台
   CHAT: 5
 })
+
+export * from './src/resource'

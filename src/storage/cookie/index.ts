@@ -17,6 +17,6 @@ import * as names from './names'
       getJSON()             [void] 取json
       remove()              [void]  删除存储的数据
  */
-export const demoCookie = new storage.Cookie({
-  name: names.DEMO
+export const macKeyCookie = new storage.Cookie({
+  name: names.MAC_KEY
 })

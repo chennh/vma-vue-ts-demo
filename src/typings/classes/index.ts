@@ -1,5 +1,1 @@
-import Page from './global/Page'
-
-export {
-  Page
-}
+export * from './global/Page'

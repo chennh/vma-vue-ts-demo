@@ -6,5 +6,7 @@ const config: any = cipher.decodeJSON(process.config)
 
 export const nodeEnv: string = config.NODE_ENV
 export const DEBUG_MODE: boolean = config.DEBUG_MODE
+export const isDev = config.NODE_ENV === 'dev' || config.NODE_ENV === 'development'
 export const api: string = config.api
 export const appNamespace: string = `${nodeEnv}/${config.app}`
+export const getQiniuTokenUrl = () => `${api}/common/v1.0/image/qiniutoken`
