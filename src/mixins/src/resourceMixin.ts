@@ -4,7 +4,10 @@ import { Getter } from 'vuex-class'
 
 @Component
 export default class ResourceMixin extends Vue {
+  // 所有功能权限编码
   public RESOURCE_CODE = RESOURCE_CODE
+
+  // 当前用户拥有的功能权限
   @Getter
   protected resourceActionMap!: Map<string, object>
 

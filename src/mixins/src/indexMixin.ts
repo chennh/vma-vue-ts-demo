@@ -3,6 +3,7 @@ import {
   clearSearch
 } from '@/utils'
 import { IPage } from '@/typings'
+import { ElTable } from 'element-ui/types/table'
 
 @Component
 export default class IndexMixin<T = any> extends Vue {
@@ -16,7 +17,7 @@ export default class IndexMixin<T = any> extends Vue {
   public readonly api: any
 
   /**
-   * 查询条件
+   * 查询条件，各组件可自定义扩展
    */
   public params: any = {
     current: 1,
@@ -50,9 +51,13 @@ export default class IndexMixin<T = any> extends Vue {
    * 表格
    */
   public readonly table: any = {
+    // 表头
     headers: [],
+    // 列
     columns: [],
+    // 数据
     list: [],
+    // 选中数据
     selection: []
   }
 
@@ -104,19 +109,78 @@ export default class IndexMixin<T = any> extends Vue {
   protected initReady(): void { }
 
   /**
-   * 查询列表，返回promise
-   * @param params 列表查询参数
+   * 分页接口
+   * @protected
+   * @param {*} params 参数
+   * @returns Promise
+   * @memberOf IndexMixin
    */
-  protected getApiPage(params: any): Promise<IPage<T>> {
+  protected apiPage(params: any): Promise<IPage<T>> {
     return this.api.page(params)
   }
 
+  /**
+   * 详情接口
+   * @protected
+   * @param {*} id ID
+   * @returns Promise
+   * @memberOf IndexMixin
+   */
+  protected apiGet(id: any) {
+    return this.api.get({ id })
+  }
+
+  /**
+   * 删除接口
+   * @protected
+   * @param {*} id ID
+   * @returns Promise
+   * @memberOf IndexMixin
+   */
+  protected apiDel(id: any) {
+    return this.api.del({ id, ids: id })
+  }
+
+  /**
+   * 更新接口
+   * @protected
+   * @param {*} data 更新的数据
+   * @returns Promise
+   * @memberOf IndexMixin
+   */
+  protected apiUpdate(data: any) {
+    return this.api.update(data)
+  }
+
+  /**
+   * 更新状态接口
+   * @protected
+   * @param {*} data 更新的数据
+   * @returns Promise
+   * @memberOf IndexMixin
+   */
+  protected apiUpdateStatus(data: any) {
+    return this.api.updateStatus(data)
+  }
+
+  /**
+   * 分页接口适配器，如果组件内不需要分页则可以修改该接口实现特定逻辑
+   * <p>所有需要更新列表的地方，都会调用该方法</p>
+   * @protected
+   * @param {number} [current] 页码
+   * @param {number} [size] 页数
+   * @returns {*}
+   * @memberOf IndexMixin
+   */
   protected pageAdaptor(current?: number, size?: number): any {
     return this.page(current, size)
   }
 
   /**
    * 获取查询参数
+   * @protected
+   * @returns {*} 查询参数
+   * @memberOf IndexMixin
    */
   protected getParams(): any {
     return Object.assign({}, this.params)
@@ -124,8 +188,10 @@ export default class IndexMixin<T = any> extends Vue {
 
   /**
    * 设置列表查询参数的页码/页数
-   * @param current 页码
-   * @param size 页数
+   * @protected
+   * @param {number} current 页码
+   * @param {number} [size] 页数
+   * @memberOf IndexMixin
    */
   protected setParamsPage(current: number, size?: number): void {
     if (!isNaN(current)) {
@@ -138,6 +204,8 @@ export default class IndexMixin<T = any> extends Vue {
 
   /**
    * 查询第一页
+   * @protected
+   * @memberOf IndexMixin
    */
   protected search(): void {
     this.table.selection = []
@@ -156,7 +224,9 @@ export default class IndexMixin<T = any> extends Vue {
 
   /**
    * 延迟查询
-   * @param delayTime 延迟时间
+   * @protected
+   * @param {number} [delayTime=0] 延迟时间
+   * @memberOf IndexMixin
    */
   protected delaySearch(delayTime: number = 0) {
     setTimeout(() => {
@@ -166,23 +236,15 @@ export default class IndexMixin<T = any> extends Vue {
 
   /**
    * 清空搜索条件并查询第一页
+   * @protected
+   * @memberOf IndexMixin
    */
   protected clearSearch(): void {
     const params = clearSearch(this.params)
     this.afterClearSearch(params)
-    this.params = Object.assign(this.params, params)
-    this.drawer.active = false
+    Object.assign(this.params, params)
+    this.hideSearchMore()
     this.search()
-  }
-
-  /**
-   * 关闭查询更多条件
-   *
-   * @protected
-   * @memberOf IndexMixin
-   */
-  protected hideSearchMore(): void {
-    this.drawer.show = false
   }
 
   /**
@@ -192,23 +254,35 @@ export default class IndexMixin<T = any> extends Vue {
   protected afterClearSearch(params: any): void { }
 
   /**
-   * 执行列表查询
-   * @param current 页码
-   * @param size 页数
+   * 关闭查询更多条件
+   * @protected
+   * @memberOf IndexMixin
+   */
+  protected hideSearchMore(): void {
+    this.drawer.show = false
+  }
+
+  /**
+   * 查询列表
+   * @protected
+   * @param {number} [current=this.params.current] 页码
+   * @param {number} [size=this.params.size] 页数
+   * @returns {Promise<IPage<T>>}
+   * @memberOf IndexMixin
    */
   protected page(current: number = this.params.current, size: number = this.params.size): Promise<IPage<T>> {
-    return new Promise(resolve => {
-      this.setParamsPage(current, size)
-      const params = this.getParams()
-      resolve(this.getApiPage(params).then(page => {
-        return this.resolvePage(page, params)
-      }))
+    this.setParamsPage(current, size)
+    const params = this.getParams()
+    return this.apiPage(params).then(page => {
+      return this.resolvePage(page, params)
     })
   }
 
   /**
    * 刷新列表并显示详情
-   * @param index 显示的详情索引，不传则刷新当前详情
+   * @protected
+   * @param {number} [index] 显示的详情索引，不传则刷新当前详情
+   * @memberOf IndexMixin
    */
   protected pageAndDetail(index?: number): void {
     this.page().then(page => {
@@ -239,8 +313,11 @@ export default class IndexMixin<T = any> extends Vue {
 
   /**
    * 处理分页返回的数据
-   * @param page 分页
-   * @param params 查询参数
+   * @protected
+   * @param {IPage<T>} page 分页数据
+   * @param {*} params 查询参数
+   * @returns {*}
+   * @memberOf IndexMixin
    */
   protected resolvePage(page: IPage<T>, params: any): any {
     // 总数据不为0，当前页数据为0，往前跳一页
@@ -256,13 +333,17 @@ export default class IndexMixin<T = any> extends Vue {
 
   /**
    * 列表完成钩子
-   * @param list 列表数据
+   * @protected
+   * @param {any[]} list 列表数据
+   * @memberOf IndexMixin
    */
   protected afterPage(list: any[]): void { }
 
   /**
    * 设置列表数据
-   * @param list 列表数据
+   * @protected
+   * @param {any[]} list 列表数据
+   * @memberOf IndexMixin
    */
   protected setTable(list: any[]): void {
     if (this.table.selection.length) {
@@ -289,7 +370,7 @@ export default class IndexMixin<T = any> extends Vue {
    * @param {any[]} selection
    * @memberOf IndexMixin
    */
-  protected handleTableSelectionchange(selection: any[]): void {
+  protected handleTableSelectionChange(selection: any[]): void {
     this.table.selection = selection
   }
 
@@ -301,13 +382,15 @@ export default class IndexMixin<T = any> extends Vue {
   protected clearTableSection(): void {
     this.table.selection = []
     if (this.$refs.table) {
-      (this.$refs.table as any).clearSelection()
+      (this.$refs.table as ElTable).clearSelection()
     }
   }
 
   /**
    * 设置分页
-   * @param page 分页对象
+   * @protected
+   * @param {IPage<T>} page 分页数据
+   * @memberOf IndexMixin
    */
   protected setPage(page: IPage<T>): void {
     this.pageData.total = page.total
@@ -315,18 +398,26 @@ export default class IndexMixin<T = any> extends Vue {
 
   /**
    * 显示新增/编辑页
-   * @param entityOrId 数据详情/数据ID
+   * @protected
+   * @param {*} [entityOrId] 数据详情/数据ID
+   * @memberOf IndexMixin
    */
   protected showForm(entityOrId?: any): void {
     if (!entityOrId || typeof (entityOrId) === 'object') {
       this.showFormEntity(entityOrId)
     } else {
-      this.api.get({ id: entityOrId }).then((data: any) => {
+      this.apiGet(entityOrId).then((data: any) => {
         this.showFormEntity(data)
       })
     }
   }
 
+  /**
+   * 显示新增/编辑页
+   * @protected
+   * @param {*} entity 数据详情
+   * @memberOf IndexMixin
+   */
   protected showFormEntity(entity: any): void {
     this.form.entity = entity || {}
     this.form.show = true
@@ -334,6 +425,8 @@ export default class IndexMixin<T = any> extends Vue {
 
   /**
    * 关闭新增/编辑页
+   * @protected
+   * @memberOf IndexMixin
    */
   protected hideForm(): void {
     this.form.entity = {}
@@ -352,6 +445,9 @@ export default class IndexMixin<T = any> extends Vue {
 
   /**
    * 新增/编辑成功后钩子
+   * @protected
+   * @param {*} entity 提交的表单数据
+   * @memberOf IndexMixin
    */
   protected afterSubmitForm(entity: any): void {
     this.form.show = false
@@ -361,6 +457,8 @@ export default class IndexMixin<T = any> extends Vue {
 
   /**
    * 取消新增/编辑
+   * @protected
+   * @memberOf IndexMixin
    */
   protected cancelForm(): void {
     this.form.show = false
@@ -368,25 +466,39 @@ export default class IndexMixin<T = any> extends Vue {
 
   /**
    * 显示详情
-   * @param entityOrId 数据详情/数据ID
+   * @protected
+   * @param {*} entityOrId 数据详情/数据ID
+   * @param {number} [index] 当前详情在列表中的索引
+   * @memberOf IndexMixin
    */
   protected showDetail(entityOrId: any, index?: number): void {
     this.detail.index = index
     if (typeof entityOrId !== 'object') {
       this.api.get({ id: entityOrId }).then((data: any) => {
-        this.detail.entity = data || {}
-        this.detail.show = true
+        this.showDetailEntity(data || {})
       })
     } else {
-      this.detail.entity = entityOrId
-      this.detail.show = true
+      this.showDetailEntity(entityOrId)
     }
   }
 
   /**
+   * 显示详情
+   * @protected
+   * @param {*} entity 数据详情
+   * @memberOf IndexMixin
+   */
+  protected showDetailEntity(entity: any): void {
+    this.detail.entity = entity
+    this.detail.show = true
+  }
+
+  /**
    * 删除数据
-   * @param id 数据ID
-   * @param content 提示文字
+   * @protected
+   * @param {*} id ID
+   * @param {string} [content='删除操作不可恢复，确认继续删除?'] 提示文字
+   * @memberOf IndexMixin
    */
   protected showDel(id: any, content: string = '删除操作不可恢复，确认继续删除?'): void {
     this.$confirm(content, '确认删除?', {
@@ -394,13 +506,22 @@ export default class IndexMixin<T = any> extends Vue {
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
-      this.api.del({ id, ids: id }).then(() => {
-        this.success('删除成功')
-        this.afterDel()
-      })
+      this.del(id)
     })
   }
 
+  /**
+   * 删除
+   * @protected
+   * @param {*} id
+   * @memberOf IndexMixin
+   */
+  protected del(id: any) {
+    this.apiDel(id).then(() => {
+      this.success('删除成功')
+      this.afterDel()
+    })
+  }
 
   /**
    * 批量删除
@@ -415,7 +536,6 @@ export default class IndexMixin<T = any> extends Vue {
       this.info('请选择要删除的数据')
     }
   }
-
 
   /**
    * 删除成功后执行
@@ -432,7 +552,7 @@ export default class IndexMixin<T = any> extends Vue {
    * @param label 标题
    */
   protected update(data: any, label: string = '更新'): void {
-    this.api.update(data).then(() => {
+    this.apiUpdate(data).then(() => {
       this.success(`${label}成功`)
       this.afterUpdate(data, label)
     })
@@ -447,7 +567,6 @@ export default class IndexMixin<T = any> extends Vue {
     this.pageAdaptor()
   }
 
-
   /**
    * 更新状态
    * @protected
@@ -456,7 +575,7 @@ export default class IndexMixin<T = any> extends Vue {
    * @memberOf IndexMixin
    */
   protected updateStatus(id: string, status: number, label?: string) {
-    this.api.updateStatus({
+    this.apiUpdateStatus({
       id,
       status
     }).then(() => {
