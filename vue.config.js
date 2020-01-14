@@ -3,6 +3,7 @@ const {
   cipher,
   args
 } = require('vma-vue-assist/dist/static/js/utils')
+const postcssPxToRem = require('postcss-pxtorem')
 
 const config = {
   productionGzip: true,
@@ -51,6 +52,15 @@ module.exports = {
       // 给 sass-loader 传递选项
       sass: {
         data: `@import "@/assets/css/theme/variable.scss";`
+      },
+      postcss: {
+        plugins: [
+          postcssPxToRem({
+            rootValue: 20,
+            selectorBlackList: [/^html,\s*body/],
+            propList: ['*']
+          })
+        ]
       }
     }
   }

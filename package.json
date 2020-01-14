@@ -31,6 +31,7 @@
     "@vue/cli-service": "^3.0.1",
     "compression-webpack-plugin": "^1.1.11",
     "node-sass": "^4.9.0",
+    "postcss-pxtorem": "^4.0.1",
     "sass-loader": "^7.0.1",
     "typescript": "^3.0.0",
     "vue-template-compiler": "^2.5.17"
