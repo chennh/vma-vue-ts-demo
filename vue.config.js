@@ -56,7 +56,7 @@ module.exports = {
       postcss: {
         plugins: [
           postcssPxToRem({
-            rootValue: 20,
+            rootValue: 16,
             selectorBlackList: [/^html,\s*body/],
             propList: ['*']
           })
