@@ -361,6 +361,9 @@ export default class IndexMixin<T = any> extends Vue {
         }
       }
     }
+    if (this.$refs.table) {
+      (this.$refs.table as any).bodyWrapper.scrollTop = 0
+    }
     this.table.list = list
   }
 
