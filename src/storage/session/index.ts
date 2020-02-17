@@ -18,6 +18,17 @@ import * as names from './names'
       remove()              [void]  删除存储的数据
  */
 
-export const demoSession = new storage.SessionItem({
-  name: names.DEMO
+// 当前登录用户
+export const adminInfoSession = new storage.SessionItem({
+  name: names.ADMIN_INFO
+})
+// 当前对象中是否有存储着正确的用户数据
+export const adminInfoSessionHasData = () => {
+  const adminInfo = adminInfoSession.getJSON()
+  return !!(adminInfo && adminInfo.macKey)
+}
+
+// 当前激活的菜单
+export const frameActiveMenuSession = new storage.SessionItem({
+  name: names.FRAME_ACTIVE_MENU
 })

@@ -1,0 +1,91 @@
+.info {
+  padding: rem(30px) rem(20px) rem(50px);
+  border: 1px solid rgba(235, 235, 235, 1);
+  border-radius: rem(4px);
+
+  .info-block {
+    padding: rem(15px) rem(30px);
+    border-bottom: 1px dashed rgba(235, 235, 235, 1);
+  }
+
+  h3 {
+    font-weight: bold;
+    font-size: rem(20px);
+    line-height: rem(50px);
+  }
+
+  p {
+    font-size: rem(13px);
+    line-height: rem(30px);
+    color: #333;
+  }
+}
+
+.info-user {
+  .info-user-avtor {
+    display: inline-block;
+    width: rem(104px);
+    height: rem(104px);
+    border-radius: 50%;
+    background: #efefef;
+    border: none;
+    outline: none;
+  }
+}
+
+.classList {
+  .item {
+    border: 1px solid #f3f3f3;
+  }
+
+  .title {
+    background: #f5f5f5;
+    padding: 7px 20px;
+    margin-bottom: 20px;
+  }
+}
+
+.filter-tree {
+  .custom-tree-node {
+    width: 100%;
+  }
+}
+
+.checkbox-list {
+  .checkbox-title {
+    line-height: 36px;
+    border-bottom: 1px solid #ddd;
+
+    .el-checkbox__label {
+      font-size: 16px;
+      color: #2897ff;
+    }
+  }
+
+  .checkbox-cld-list {
+    padding: 6px 20px;
+
+    .checkbox-cld-title {
+      line-height: 32px;
+
+      .el-checkbox__label {
+        font-size: 14px;
+        font-weight: bold;
+      }
+    }
+
+    .checkbox-cld-label {
+      line-height: 28px;
+      display: inline-block;
+      margin-left: 20px;
+    }
+  }
+}
+
+.font-red {
+  color: #ff0000;
+}
+
+.font-green {
+  color: #44C89A;
+}

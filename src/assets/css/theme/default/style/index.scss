@@ -1,0 +1,25 @@
+@import 'reset.scss';
+@import 'base.scss';
+@import 'scroll.scss';
+@import 'icon.scss';
+
+// plugin
+@import 'plugin/animate.min.css';
+@import 'plugin/element-ui.scss';
+
+// component
+@import 'component/info.scss';
+@import 'component/card.scss';
+@import 'component/tab.scss';
+@import 'component/stage.scss';
+@import 'component/options.scss';
+
+// page
+@import 'page/login.scss';
+
+// response
+@import './response/1920';
+@import './response/1440';
+@import './response/1280';
+@import './response/1024';
+@import './response/720';

@@ -1,5 +1,5 @@
 enum Types {
-  SYSTEM = 'FRAME/SYSTEM',
+  SYSTEM = 'LOGIN/SYSTEM'
 }
 
 export default Types

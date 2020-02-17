@@ -1,0 +1,98 @@
+//::-webkit-scrollbar {
+//  width: 4px;
+//  height: 4px;
+//}
+//
+//::-webkit-scrollbar-button {
+//  background-color: transparent;
+//}
+//
+//::-webkit-scrollbar-track {
+//  background: transparent;
+//}
+//
+//::-webkit-scrollbar-track-piece {
+//  background: $nav-color;
+//}
+//
+//::-webkit-scrollbar-thumb {
+//  background: #aaa;
+//  border-radius: 4px;
+//}
+//
+//::-webkit-scrollbar-corner {
+//  background: transparent;
+//}
+//
+//::-webkit-scrollbar-resizer {
+//  background: transparent;
+//}
+
+// el-dialog 左侧滚动条
+.scrmp-body,
+.scrmp-side,
+.scrmp-header-menu,
+.lyy-page-aside .frame-nav,
+.lyy-page-body,
+.lyy-page-main .tags-ul,
+.vma-dialog .el-dialog__body,
+.frame-body .frame-nav,
+.frame-wrapper .frame-main,
+.frame-control .tags-ul,
+.dialog-chat .chatcontent-record,
+.dialog-chat .dialog-chat-fiendslist{
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  &::-webkit-scrollbar-button {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    background: $nav-color;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #aaa;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-resizer {
+    background: transparent;
+  }
+}
+.lyy-page-main .tags-ul{
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: rem(10px);
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 0px;
+  }
+}
+.scrmp-side{
+  &::-webkit-scrollbar {
+    width: 3px;
+    height: 1px;
+  }
+}
+.scrmp-header-menu{
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: rem(10px);
+    cursor: pointer;
+  }
+}
+
+
+
+

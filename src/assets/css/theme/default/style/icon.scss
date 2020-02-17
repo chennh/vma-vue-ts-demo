@@ -1,0 +1,30 @@
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+
+  &.icon-login-gongzhonghao {
+    background-image: url('../images/login/gongzhonghao@2x.png');
+    width: rem(30px);
+    height: rem(26px);
+  }
+
+  &.icon-login-zhanghao {
+    background-image: url('../images/login/zhanghao@2x.png');
+    width: rem(20px);
+    height: rem(20px);
+  }
+
+  &.icon-login-mima {
+    background-image: url('../images/login/mima@2x.png');
+    width: rem(20px);
+    height: rem(20px);
+  }
+
+  &.icon-login-yanzhengma {
+    background-image: url('../images/login/yanzhengma@2x.png');
+    width: rem(20px);
+    height: rem(20px);
+  }
+}

@@ -7,6 +7,7 @@ import { DEBUG_MODE } from './config'
 import plugins from './plugins'
 import * as libComponents from './components/libs'
 import { eachOwn } from '@/utils'
+import '@/assets/css/theme/index'
 
 Vue.config.productionTip = DEBUG_MODE
 

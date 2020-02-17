@@ -1,0 +1,144 @@
+html,
+body {
+  height: 100%;
+  font-family: $font-family;
+  font-size: $font-size-root;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+ins {
+  text-decoration: none;
+}
+
+.align-l {
+  text-align: left;
+}
+
+.align-c {
+  text-align: center;
+}
+
+.align-r {
+  text-align: right;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+}
+
+.box-1 {
+  flex: 1;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clearfix,
+.clear {
+  @extend %clearfix;
+}
+
+.ellipse {
+  @extend %ellipse;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.c-gray {
+  color: #ccc;
+}
+
+$size-map: (f10: rem(-10px), f5: rem(-5px), 0: rem(0px), 5: rem(5px), 10: rem(10px), 15: rem(15px), 20: rem(20px), 25: rem(25px), 30: rem(30px));
+
+@each $name in map-keys($size-map) {
+  $value: map-get($size-map, $name);
+
+  .mt-#{$name} {
+    margin-top: $value;
+  }
+
+  .mr-#{$name} {
+    margin-right: $value;
+  }
+
+  .mb-#{$name} {
+    margin-bottom: $value;
+  }
+
+  .ml-#{$name} {
+    margin-left: $value;
+  }
+
+  .margin-#{$name} {
+    margin: $value;
+  }
+
+  .margin-h-#{$name} {
+    margin-left: $value;
+    margin-right: $value;
+  }
+
+  .margin-v-#{$name} {
+    margin-top: $value;
+    margin-bottom: $value;
+  }
+
+  .pt-#{$name} {
+    padding-top: $value;
+  }
+
+  .pr-#{$name} {
+    padding-right: $value;
+  }
+
+  .pb-#{$name} {
+    padding-bottom: $value;
+  }
+
+  .pl-#{$name} {
+    padding-left: $value;
+  }
+
+  .padding-#{$name} {
+    padding: $value;
+  }
+
+  .padding-h-#{$name} {
+    padding-left: $value;
+    padding-right: $value;
+  }
+
+  .padding-v-#{$name} {
+    padding-top: $value;
+    padding-bottom: $value;
+  }
+}
+
+@each $name in map-keys($theme-map) {
+  .c-#{$name} {
+    color: map-get($theme-map, $name) !important;
+  }
+}

@@ -1,0 +1,50 @@
+$screen-width: 1920px;
+// 中文字体
+$font-family: 'PingFangSC',
+'helvetica neue',
+'hiragino sans gb',
+'arial',
+'microsoft yahei ui',
+'microsoft yahei',
+'simsun',
+'sans-serif' !important;
+$font-size-root: 20px;
+$font-size-frame: 12px;
+// 菜单栏
+$nav-color: #3A4762;
+$nav-color_hover: #373E41;
+$nav-color_active: #02C1DE;
+
+// 主题颜色
+$theme-default: #262B2E;
+$theme-primary: #2897FF;
+$theme-success: #3EC093;
+$theme-info: #0091DB;
+$theme-warning: #F7AD60;
+$theme-danger: #FF7570;
+$theme-map: ('default': $theme-default, 'primary': $theme-primary, 'success': $theme-success, 'info': $theme-info, 'warning': $theme-warning, 'danger': $theme-danger, );
+
+// px 转换成 rem
+// $px 带px单位
+@function rem($px) {
+  @return #{$px/$font-size-root}rem;
+}
+
+%clearfix {
+  *zoom: 1; // for IE6,7
+
+  &:after {
+    content: '';
+    height: 0;
+    visibility: hidden;
+    display: block;
+    clear: both;
+  }
+}
+
+// 文字溢出 ...
+%ellipse {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
