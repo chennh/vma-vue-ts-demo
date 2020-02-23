@@ -1,26 +1,19 @@
 <template>
   <scrm-frame>
     <scrm-frame-header slot="header"
-                       :logo="logo">
-
-      <!-- header中间的导航 -->
-      <scrm-frame-nav slot="nav"
-                      :list="navList"
-                      v-model="activeNavId" />
+                       :logo="adminInfo.logo || localLogo || loginInfo.logo"
+                       >
 
       <!-- 右侧，头像、操作 -->
       <ul slot="right">
-        <li>文字</li>
-        <li><a href="javascript: void(0);">按钮</a></li>
         <li>
           <el-dropdown class="scrm-frame-header-admin">
             <span class="el-dropdown-link">
-              用户名<i class="el-icon-arrow-down el-icon--right"></i>
+              {{adminInfo.name || adminInfo.account}}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>修改密码</el-dropdown-item>
-              <el-dropdown-item>个人中心</el-dropdown-item>
-              <el-dropdown-item>退出</el-dropdown-item>
+              <el-dropdown-item @click.native="updatePasswordModule.show">修改密码</el-dropdown-item>
+              <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </li>
@@ -30,99 +23,129 @@
     <!-- 菜单栏 -->
     <scrm-frame-menu slot="menu"
                      :list="menuList"
-                     v-model="activeMenuId" />
+                     v-model="activeMenuId"
+                     @click="navigateToMenu" />
 
     <!-- 主要内容区域 -->
-    <router-view />
+    <transition mode="out-in"
+                enter-active-class="fadeInUpBig"
+                leave-active-class="fadeOutUpBig">
+      <router-view class="container animated" />
+    </transition>
 
+    <el-dialog title="修改密码"
+               :visible.sync="updatePasswordModule.visible"
+               append-to-body
+               destroy-on-close
+               width="520px">
+      <update-password @submit="updatePasswordModule.submit"
+                       @cancel="updatePasswordModule.cancel"
+                       v-if="updatePasswordModule.visible" />
+    </el-dialog>
   </scrm-frame>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import logo from '@/assets/images/logo.png'
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Action, State } from 'vuex-class'
+import { broadcastLogoutLocal, frameActiveMenuSession } from '@/storage'
+import { loginInfo } from '@/config'
+// import LoginBO from '@/api/common/v1.0/definitions/LoginBO'
+// import RbacResourceMenuBO from '@/api/common/v1.0/definitions/RbacResourceMenuBO'
+// import { AccountApi } from '@/api/common/v1.0/accountApi'
+import FrameMenu from './definitions/FrameMenu'
+import UpdatePassword from './components/updatePassword/index.vue'
+import VueModule from '@/utils/vueModule'
+import LocalLogo from '@/assets/images/logo.png'
 
-@Component
+@Component({
+  components: {
+    UpdatePassword
+  }
+})
 export default class Frame extends Vue {
-  private logo = logo
-  private navList = [
-    {
-      title: '首页'
-    }
-  ].concat(
-    Array(20)
-      .fill(1)
-      .map((v, i) => {
-        return {
-          id: i,
-          title: `页面${i}`
-        }
-      })
-  )
-  private activeNavId = ''
-  private activeMenuId = 6
-  private menuList = [
-    {
-      id: 1,
-      icon: 'el-icon-platform-eleme',
-      title: '微信管理',
-      children: [
-        {
-          id: 2,
-          icon: '',
-          title: '个人号管理',
-          children: []
-        },
-        {
-          id: 3,
-          icon: '',
-          title: '个人号管理',
-          children: []
-        },
-        {
-          id: 4,
-          icon: '',
-          title: '个人号管理',
-          children: []
-        },
-        {
-          id: 5,
-          icon: '',
-          title: '个人号管理',
-          children: []
-        },
-        {
-          id: 6,
-          icon: '',
-          title: '个人号管理',
-          children: []
-        },
-        {
-          id: 7,
-          icon: '',
-          title: '个人号管理',
-          children: []
-        },
-        {
-          id: 8,
-          icon: '',
-          title: '个人号管理',
-          children: []
-        }
-      ]
-    },
-    {
-      id: 9,
-      icon: 'el-icon-user-solid',
-      title: '智能管理',
-      children: [
-        {
-          id: 10,
-          icon: '',
-          title: '自动通过',
-          children: []
-        }
-      ]
-    }
-  ]
+  // private loginInfo = loginInfo
+
+  // // 当前激活的菜单
+  // private activeMenuId = frameActiveMenuSession.get()
+
+  // private logoutBroadIndex = -1
+
+  // @State
+  // private adminInfo!: LoginBO
+
+  // @Action
+  // private logoutBroadcast: any
+
+  // @Action
+  // private logout: any
+
+  // // 本地logo
+  // private localLogo: any = LocalLogo
+
+  // private data() {
+  //   return {
+  //     updatePasswordModule: VueModule.create({
+  //       submit: () => {
+  //         this.success('修改密码成功，请重新登录')
+  //         this.logout()
+  //       }
+  //     })
+  //   }
+  // }
+
+  // private get menuList() {
+  //   let activeMenu: FrameMenu | null = null
+  //   const loopMenu = (list: RbacResourceMenuBO[]): FrameMenu[] => {
+  //     if (list && list.length) {
+  //       return list.map<FrameMenu>(resourceMenu => {
+  //         const frameMenu = Object.assign({}, resourceMenu) as FrameMenu
+  //         frameMenu.title = resourceMenu.description
+  //         frameMenu.icon = resourceMenu.menuIcon
+  //         frameMenu.children = loopMenu(resourceMenu.node)
+  //         if (!this.activeMenuId) {
+  //           this.activeMenuId = frameMenu.id
+  //           activeMenu = frameMenu
+  //         } else if (this.activeMenuId === frameMenu.id) {
+  //           activeMenu = frameMenu
+  //         }
+  //         return frameMenu
+  //       })
+  //     }
+  //     return []
+  //   }
+  //   const resourceMenuList = loopMenu(this.adminInfo.resourceMenuList)
+  //   this.navigateToMenu(activeMenu)
+  //   return resourceMenuList
+  // }
+
+  // @Watch('activeMenuId')
+  // private watchActiveMenuId(val: any) {
+  //   frameActiveMenuSession.set(val)
+  // }
+
+  // private created() {
+  //   // 注册登出广播事件
+  //   this.logoutBroadIndex = broadcastLogoutLocal.onBroadcast(() => {
+  //     this.logoutBroadcast()
+  //   })
+  // }
+
+  // private beforeDestroy() {
+  //   broadcastLogoutLocal.offBroadcast(this.logoutBroadIndex)
+  // }
+
+  // private navigateToMenu(data: FrameMenu | null) {
+  //   if (data && this.$route.name !== data.url) {
+  //     this.$router.push({
+  //       name: data.url
+  //     })
+  //   }
+  // }
 }
 </script>
+
+<style lang="scss">
+  .scrm-frame-header-logo img {
+    width: 7.2rem;
+  }
+</style>

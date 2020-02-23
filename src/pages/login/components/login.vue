@@ -101,6 +101,7 @@ import { loginInfo } from '@/config'
 // import HomeLoginParam from '@/api/common/v1.0/params/HomeLoginParam'
 import { redirectToHome } from '@/router'
 import RSAUtils from '@/assets/vendors/rsa'
+import * as actionTypes from '@/store/actionTypes'
 
 const ElMessage = Message as any
 
@@ -138,7 +139,7 @@ export default class Login extends Vue {
 
   private loginBroadIndex = -1
 
-  @Action
+  @Action(actionTypes.AFTER_LOGIN)
   private afterLogin: any
 
   private created() {
