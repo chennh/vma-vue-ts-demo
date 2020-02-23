@@ -1,3 +1,4 @@
+const path = require('path')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const {
   cipher,
@@ -27,12 +28,19 @@ if (isProduction && config.productionGzip) {
   )
 }
 
+function resolve(dir) {
+  return path.join(__dirname, dir)
+}
+
 // vue.config.js
 module.exports = {
   // 生产环境是否生成 sourceMap 文件
   productionSourceMap: false,
   configureWebpack: {
-    plugins: configureWebpackPlugins
+    plugins: configureWebpackPlugins,
+    externals: {
+      'CKEDITOR': 'window.CKEDITOR'
+    }
   },
   chainWebpack: config => {
     const profile = getProfile()
@@ -46,6 +54,8 @@ module.exports = {
         })
         return args
       })
+    config.resolve.alias
+      .set('@static', resolve('public/static'))
   },
   css: {
     loaderOptions: {
