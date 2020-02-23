@@ -1,6 +1,2 @@
-enum Types {
-  PAGE404 = 'COMMON/PAGE404',
-  MAINTAIN = 'COMMON/MAINTAIN'
-}
-
-export default Types
+export const PAGE404 = 'COMMON/PAGE404'
+export const MAINTAIN = 'COMMON/MAINTAIN'

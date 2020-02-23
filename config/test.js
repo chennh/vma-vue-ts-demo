@@ -1,3 +1,3 @@
 module.exports = {
-  API: '"123"'
+  api: '"123"'
 }

@@ -1,7 +1,8 @@
-import routes from './routes'
-import types from './types'
-import { isTypesRouter } from '@/utils'
+import * as types from './types'
+import { RouterWrapper } from '@/utils'
 
-export const isRouter = (routerName: string | undefined) => isTypesRouter(routerName, types)
-
-export default routes
+export default new RouterWrapper(types, [{
+  path: '/login/system',
+  name: types.SYSTEM,
+  component: () => RouterWrapper.resolveRouterComponent(import('@/pages/login/systemLogin.vue')),
+}])

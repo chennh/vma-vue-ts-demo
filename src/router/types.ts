@@ -1,5 +1,1 @@
-enum Types {
-  SYSTEM = 'FRAME/SYSTEM',
-}
-
-export default Types
+export const SYSTEM = 'FRAME/SYSTEM'

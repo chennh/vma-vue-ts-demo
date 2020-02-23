@@ -2,6 +2,7 @@ import { api, isDev } from '@/config'
 import { macKeyCookie } from '@/storage/cookie/index'
 import vmaAssist from 'vma-vue-assist'
 import { VueConstructor } from 'vue'
+import handleError from './handleError'
 import Loader from './loader'
 
 export default {
@@ -15,6 +16,7 @@ export default {
           interceptor: {
             errorHandle: {
               handleError(error: any) {
+                handleError(error)
                 return Promise.reject(error)
               }
             },

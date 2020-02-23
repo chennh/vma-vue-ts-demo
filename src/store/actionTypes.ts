@@ -1,0 +1,4 @@
+export const AFTER_LOGIN = 'AFTER_LOGIN'
+export const AFTER_LOGOUT = 'AFTER_LOGOUT'
+export const LOGOUT = 'LOGOUT'
+export const LOGOUT_BROADCAST = 'LOGOUT_BROADCAST'

@@ -1,5 +1,1 @@
-enum Types {
-  SYSTEM = 'LOGIN/SYSTEM'
-}
-
-export default Types
+export const SYSTEM = 'LOGIN/SYSTEM'

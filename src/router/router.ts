@@ -1,28 +1,18 @@
-import Vue from 'vue'
-import Router, { RouteConfig } from 'vue-router'
-import types from './types'
-import commonRoutes from './common'
-import loginRoutes from './login'
-import { isTypesRouter, resolveRouterComponent } from '@/utils'
+import * as types from './types'
+import commonRouter from './common'
+import loginRouter from './login'
+import { RouterWrapper } from '@/utils'
 
-Vue.use(Router)
-
-const routes: RouteConfig[] = [
-  ...loginRoutes,
-  ...commonRoutes,
+export default new RouterWrapper(types, [
+  ...loginRouter.routes,
+  ...commonRouter.routes,
   {
     path: '/',
-    component: () => resolveRouterComponent(import('@/pages/frame/index.vue')),
+    component: () => RouterWrapper.resolveRouterComponent(import('@/pages/frame/index.vue')),
     children: []
   },
   {
     path: '*',
     redirect: '/login/system'
   }
-]
-
-export const isRouter = (routerName: string | undefined) => isTypesRouter(routerName, types)
-
-export default new Router({
-  routes
-})
+])
