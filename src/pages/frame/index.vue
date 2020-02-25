@@ -1,8 +1,7 @@
 <template>
   <scrm-frame>
     <scrm-frame-header slot="header"
-                       :logo="adminInfo.logo || localLogo || loginInfo.logo"
-                       >
+                       :logo="adminInfo.logo || localLogo || loginInfo.logo">
 
       <!-- 右侧，头像、操作 -->
       <ul slot="right">
@@ -54,8 +53,9 @@ import { loginInfo } from '@/config'
 // import { AccountApi } from '@/api/common/v1.0/accountApi'
 import FrameMenu from './definitions/FrameMenu'
 import UpdatePassword from './components/updatePassword/index.vue'
-import VueModule from '@/utils/vueModule'
+import { VueModule } from '@/utils'
 import LocalLogo from '@/assets/images/logo.png'
+import * as actionTypes from '@/store/actionTypes'
 
 @Component({
   components: {
@@ -64,24 +64,17 @@ import LocalLogo from '@/assets/images/logo.png'
 })
 export default class Frame extends Vue {
   // private loginInfo = loginInfo
-
   // // 当前激活的菜单
   // private activeMenuId = frameActiveMenuSession.get()
-
   // private logoutBroadIndex = -1
-
   // @State
   // private adminInfo!: LoginBO
-
-  // @Action
+  // @Action(actionTypes.LOGOUT_BROADCAST)
   // private logoutBroadcast: any
-
-  // @Action
+  // @Action(actionTypes.LOGOUT)
   // private logout: any
-
   // // 本地logo
   // private localLogo: any = LocalLogo
-
   // private data() {
   //   return {
   //     updatePasswordModule: VueModule.create({
@@ -92,7 +85,6 @@ export default class Frame extends Vue {
   //     })
   //   }
   // }
-
   // private get menuList() {
   //   let activeMenu: FrameMenu | null = null
   //   const loopMenu = (list: RbacResourceMenuBO[]): FrameMenu[] => {
@@ -117,23 +109,19 @@ export default class Frame extends Vue {
   //   this.navigateToMenu(activeMenu)
   //   return resourceMenuList
   // }
-
   // @Watch('activeMenuId')
   // private watchActiveMenuId(val: any) {
   //   frameActiveMenuSession.set(val)
   // }
-
   // private created() {
   //   // 注册登出广播事件
   //   this.logoutBroadIndex = broadcastLogoutLocal.onBroadcast(() => {
   //     this.logoutBroadcast()
   //   })
   // }
-
   // private beforeDestroy() {
   //   broadcastLogoutLocal.offBroadcast(this.logoutBroadIndex)
   // }
-
   // private navigateToMenu(data: FrameMenu | null) {
   //   if (data && this.$route.name !== data.url) {
   //     this.$router.push({
@@ -145,7 +133,7 @@ export default class Frame extends Vue {
 </script>
 
 <style lang="scss">
-  .scrm-frame-header-logo img {
-    width: 7.2rem;
-  }
+.scrm-frame-header-logo img {
+  width: 7.2rem;
+}
 </style>

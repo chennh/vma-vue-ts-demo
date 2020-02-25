@@ -23,3 +23,7 @@ declare module 'vma-vue-assist/dist/static/js/tools/validator' {
 declare module 'vma-vue-assist/dist/static/js/tools/date' {
   export * from 'vma-vue-assist/typings/tools/date'
 }
+
+declare module 'vma-vue-assist/dist/static/js/tools/vueModule' {
+  export * from 'vma-vue-assist/typings/tools/vueModule'
+}
