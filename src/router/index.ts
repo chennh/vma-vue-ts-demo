@@ -51,7 +51,7 @@ export function redirectToCommonMaintain() {
  * 根据路由名称是否需要重定向到登录页
  * @param routerName
  */
-export function shouldRedirectToLogin(routerName: string | undefined) {
+export function shouldRedirectToLogin(routerName: string | null | undefined) {
   return !commonRouterWrapper.isRouter(routerName) && !loginRouterWrapper.isRouter(routerName)
 }
 
@@ -61,7 +61,7 @@ export function shouldRedirectToLogin(routerName: string | undefined) {
  * @param {*} params
  */
 const excludedMenuList: any[] = []
-export function hasMenuPermission(routerName: string | undefined, params: any[]): boolean {
+export function hasMenuPermission(routerName: string | null | undefined, params: any[]): boolean {
   if (routerName &&
     !commonRouterWrapper.isRouter(routerName) &&
     !frameRouterWrapper.isRouter(routerName) &&

@@ -24,7 +24,7 @@ export class RouterWrapper<T extends RouterName> {
     })
   }
 
-  public static isRouterExists(routerName: string | undefined) {
+  public static isRouterExists(routerName: string | null | undefined) {
     return RouterWrapper.routerWrappers.some(routerWrapper => routerWrapper.isRouter(routerName))
   }
 
@@ -37,7 +37,7 @@ export class RouterWrapper<T extends RouterName> {
     RouterWrapper.routerWrappers.push(this)
   }
 
-  public isRouter(routerName: string | undefined): boolean {
+  public isRouter(routerName: string | null | undefined): boolean {
     return !!routerName
       && Object.keys(this.types).some(key => this.types[key] === routerName)
   }
