@@ -127,7 +127,7 @@ export default class IndexMixin<T = any> extends Vue {
    * @memberOf IndexMixin
    */
   protected apiGet(id: any) {
-    return this.api.get({ id })
+    return this.api.detail({ id })
   }
 
   /**
@@ -240,7 +240,9 @@ export default class IndexMixin<T = any> extends Vue {
    * @memberOf IndexMixin
    */
   protected clearSearch(): void {
-    const params = clearSearch(this.params)
+    const size = this.params.size
+    const params = clearSearch(this.params) as any
+    params.size = size
     this.afterClearSearch(params)
     Object.assign(this.params, params)
     this.hideSearchMore()
@@ -477,7 +479,7 @@ export default class IndexMixin<T = any> extends Vue {
   protected showDetail(entityOrId: any, index?: number): void {
     this.detail.index = index
     if (typeof entityOrId !== 'object') {
-      this.api.get({ id: entityOrId }).then((data: any) => {
+      this.apiGet(entityOrId).then((data: any) => {
         this.showDetailEntity(data || {})
       })
     } else {
