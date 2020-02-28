@@ -18,7 +18,7 @@ export const resourceMenuMap: Getter<State, any> = (state: State) => {
   // if (state.adminInfo && state.adminInfo.resourceMenuList) {
   //   function loopMenu(menuList: RbacResourceMenuBO[]) {
   //     menuList.forEach(menu => {
-  //       menuMap.set(menu.code, menu)
+  //       menuMap.set(menu.url, menu)
   //       if (menu.node && menu.node.length) {
   //         loopMenu(menu.node)
   //       }
