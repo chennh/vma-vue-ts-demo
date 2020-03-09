@@ -11,6 +11,7 @@ import {
 } from 'vma-vue-element'
 // import { AccountApi } from '@/api/common/v1.0/accountApi'
 import store from '@/store'
+import * as actionTypes from '@/store/actionTypes'
 
 Vue.use(VueRouter)
 
@@ -116,7 +117,7 @@ router.beforeEach((to, from, next) => {
     // 同步一次服务端用户数据，确认是否未登录，以服务端用户数据为准
     // AccountApi.menuList({ loading: false, errorHandle: false }).then(data => {
     //   if (data && data.macKey) {
-    //     store.dispatch('afterLogin', data)
+    //     store.dispatch(actionTypes.AFTER_LOGIN, data)
     //     if (loginRouterWrapper.isRouter(to.name)) {
     //       return redirectToHome()
     //     }
