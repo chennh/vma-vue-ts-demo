@@ -82,7 +82,7 @@ function getProfile() {
   if (NODE_ENV === 'production') {
     let argv
     try {
-      argv = JSON.parse(process.env.npm_config_argv).original
+      argv = JSON.parse(process.env.npm_config_argv).original.concat((process.env.npm_lifecycle_script || '').split(' ').slice(1))
     } catch (ex) {
       argv = process.argv
     }
