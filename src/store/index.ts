@@ -4,6 +4,7 @@ import actions from './actions'
 import getters from './getters'
 import state, { State } from './state'
 import mutations from './mutations'
+import { VuexWrapper } from '../utils/src/vuexWrapper'
 
 Vue.use(Vuex)
 
@@ -14,4 +15,4 @@ const store: StoreOptions<State> = {
   getters
 }
 
-export default new Vuex.Store<State>(store)
+export default new VuexWrapper<State>(store).store
