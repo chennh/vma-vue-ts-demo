@@ -27,3 +27,7 @@ declare module 'vma-vue-assist/dist/static/js/tools/date' {
 declare module 'vma-vue-assist/dist/static/js/tools/vueModule' {
   export * from 'vma-vue-assist/typings/tools/vueModule'
 }
+
+declare module 'vma-vue-assist/dist/static/js/tools/vuexWrapper' {
+  export * from 'vma-vue-assist/typings/tools/vuexWrapper'
+}
