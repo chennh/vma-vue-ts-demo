@@ -80,6 +80,16 @@ export default class IndexMixin<T = any> extends Vue {
     entity: null
   }
 
+  public get tableSelectionMap() {
+    const map: any = {}
+    if (this.table.selection) {
+      this.table.selection.forEach((v: any) => {
+        map[v.id] = v
+      })
+    }
+    return map
+  }
+
   protected mounted(): void {
     // 初始化服务端数据完成后再执行ready
     new Promise(this.initData).then(() => {
@@ -348,25 +358,18 @@ export default class IndexMixin<T = any> extends Vue {
    * @memberOf IndexMixin
    */
   protected setTable(list: any[]): void {
-    if (this.table.selection.length) {
-      const section: any[] = this.table.selection
-      const map: Map<string, any> = new Map<string, any>()
-      list.forEach((v) => {
-        map.set(v.id, v)
-      })
-      // 支持翻页后选中状态保持
-      for (let i = 0, l = section.length; i < l; i++) {
-        const v: any = section[i]
-        if (map.has(v.id)) {
-          section.splice(i, 1, map.get(v.id))
-          map.get(v.id)._checked = true
-        }
-      }
-    }
     if (this.$refs.table) {
       (this.$refs.table as any).bodyWrapper.scrollTop = 0
     }
-    this.table.list = list
+    this.table.list = list.map(v => this.tableSelectionMap[v.id] || v)
+    this.$nextTick(() => {
+      if (this.table.selection.length && this.$refs.table) {
+        const tableRef = this.$refs.table as ElTable
+        this.table.selection.forEach((v: any) => {
+          tableRef.toggleRowSelection(v, true)
+        })
+      }
+    })
   }
 
   /**
