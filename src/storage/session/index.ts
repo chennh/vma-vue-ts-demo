@@ -1,6 +1,6 @@
 import {
-  storage
-} from 'vma-vue-assist'
+  SessionItem
+} from 'vma-assist/dist/static/js/tools/storage'
 import * as names from './names'
 
 /*
@@ -19,7 +19,7 @@ import * as names from './names'
  */
 
 // 当前登录用户
-export const adminInfoSession = new storage.SessionItem({
+export const adminInfoSession = new SessionItem({
   name: names.ADMIN_INFO
 })
 // 当前对象中是否有存储着正确的用户数据
@@ -29,6 +29,6 @@ export const adminInfoSessionHasData = () => {
 }
 
 // 当前激活的菜单
-export const frameActiveMenuSession = new storage.SessionItem({
+export const frameActiveMenuSession = new SessionItem({
   name: names.FRAME_ACTIVE_MENU
 })

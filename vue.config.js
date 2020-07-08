@@ -3,7 +3,7 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const {
   cipher,
   args
-} = require('vma-vue-assist/dist/static/js/utils')
+} = require('vma-assist')
 const postcssPxToRem = require('postcss-pxtorem')
 
 const config = {

@@ -1,6 +1,6 @@
 import {
-  storage
-} from 'vma-vue-assist'
+  CookieItem
+} from 'vma-assist/dist/static/js/tools/storage'
 import * as names from './names'
 
 /*
@@ -17,6 +17,6 @@ import * as names from './names'
       getJSON()             [void] 取json
       remove()              [void]  删除存储的数据
  */
-export const macKeyCookie = new storage.Cookie({
+export const macKeyCookie = new CookieItem({
   name: names.MAC_KEY
 })

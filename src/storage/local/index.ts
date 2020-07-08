@@ -1,6 +1,6 @@
 import {
-  storage
-} from 'vma-vue-assist'
+  LocalItem
+} from 'vma-assist/dist/static/js/tools/storage'
 import * as names from './names'
 
 /*
@@ -19,18 +19,18 @@ import * as names from './names'
  */
 
 // 登录页-记住我
-export const loginRememberMeLocal = new storage.LocalItem({
+export const loginRememberMeLocal = new LocalItem({
   name: names.LOGIN_REMEMBER_ME
 })
 // 登录页-最后一次登录成功的账号
-export const loginAccountLocal = new storage.LocalItem({
+export const loginAccountLocal = new LocalItem({
   name: names.LOGIN_ACCOUNT
 })
 // 登出事件广播
-export const broadcastLogoutLocal = new storage.LocalItem({
+export const broadcastLogoutLocal = new LocalItem({
   name: names.BROADCAST_LOGOUT
 })
 // 登录事件广播
-export const broadcastLoginLocal = new storage.LocalItem({
+export const broadcastLoginLocal = new LocalItem({
   name: names.BROADCAST_LOGIN
 })

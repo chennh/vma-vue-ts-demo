@@ -1,33 +1,20 @@
 
-declare module 'vma-vue-assist' {
-  export * from 'vma-vue-assist/typings/index'
-  // export * from 'vma-vue-assist/typings/bus'
+declare module 'vma-assist/dist/static/js/utils' {
+  export * from 'vma-assist/typings/utils'
 }
 
-declare module 'vma-vue-assist/dist/static/js/utils' {
-  export * from 'vma-vue-assist/typings/utils'
+declare module 'vma-assist/dist/static/js/tools/validator' {
+  export * from 'vma-assist/typings/tools/validator'
 }
 
-declare module 'vma-vue-assist/dist/static/js/vendors/xterm' {
-  export * from 'vma-vue-assist/typings/vendors/xterm'
+declare module 'vma-assist/dist/static/js/tools/constant' {
+  export * from 'vma-assist/typings/tools/constant'
 }
 
-declare module 'vma-vue-assist/dist/static/js/vendors/codeEditor' {
-  export * from 'vma-vue-assist/typings/vendors/codeEditor'
+declare module 'vma-assist/dist/static/js/tools/storage' {
+  export * from 'vma-assist/typings/tools/storage'
 }
 
-declare module 'vma-vue-assist/dist/static/js/tools/validator' {
-  export * from 'vma-vue-assist/typings/tools/validator'
-}
-
-declare module 'vma-vue-assist/dist/static/js/tools/date' {
-  export * from 'vma-vue-assist/typings/tools/date'
-}
-
-declare module 'vma-vue-assist/dist/static/js/tools/vueModule' {
-  export * from 'vma-vue-assist/typings/tools/vueModule'
-}
-
-declare module 'vma-vue-assist/dist/static/js/tools/vuexWrapper' {
-  export * from 'vma-vue-assist/typings/tools/vuexWrapper'
+declare module 'vma-assist/dist/static/js/tools/vue' {
+  export * from 'vma-assist/typings/tools/vue'
 }

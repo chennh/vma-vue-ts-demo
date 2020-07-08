@@ -129,6 +129,7 @@ router.beforeEach((to, from, next) => {
     //   redirectToLoginOrNext()
     //   Promise.reject(err)
     // })
+    next()
   }
 })
 

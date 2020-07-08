@@ -1,6 +1,6 @@
 import {
   cipher
-} from 'vma-vue-assist/dist/static/js/utils'
+} from 'vma-assist'
 
 const config: any = cipher.decodeJSON(process.config)
 

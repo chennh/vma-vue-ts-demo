@@ -249,7 +249,7 @@ export default class Login extends Vue {
   // 重新设置[记住我]
   private resetRememberMe(account: string) {
     const rememberMe = this.rememberMe
-    loginRememberMeLocal.set(rememberMe)
+    loginRememberMeLocal.set(String(rememberMe))
     if (rememberMe) {
       loginAccountLocal.set(account)
     } else {

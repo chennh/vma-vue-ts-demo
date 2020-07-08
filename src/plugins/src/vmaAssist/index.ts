@@ -1,13 +1,13 @@
 import { api, isDev } from '@/config'
 import { macKeyCookie } from '@/storage/cookie/index'
-import vmaAssist from 'vma-vue-assist'
+import { VueAssist, VueOptions } from 'vma-assist'
 import { VueConstructor } from 'vue'
 import handleError from './handleError'
 import Loader from './loader'
 
 export default {
   install(Vue: VueConstructor) {
-    Vue.use(vmaAssist as any, {
+    Vue.use<VueOptions>(VueAssist, {
       plugins: {
         axios: {
           defaults: {
@@ -15,7 +15,7 @@ export default {
           },
           interceptor: {
             errorHandle: {
-              handleError(error: any) {
+              error(error: any) {
                 handleError(error)
                 return Promise.reject(error)
               }
@@ -33,8 +33,7 @@ export default {
               getMacKey() {
                 return macKeyCookie.get() || ''
               }
-            },
-            returnResponseData: true
+            }
           }
         }
       }

@@ -1,6 +1,6 @@
 import {
   Constant
-} from 'vma-vue-assist'
+} from 'vma-assist/dist/static/js/tools/constant'
 
 /*
  *  Constant

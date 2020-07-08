@@ -4,7 +4,7 @@ import actions from './actions'
 import getters from './getters'
 import state, { State } from './state'
 import mutations from './mutations'
-import { VuexWrapper } from 'vma-vue-assist/dist/static/js/tools/vuexWrapper'
+import { VuexWrapper } from 'vma-assist/dist/static/js/tools/vue'
 
 Vue.use(Vuex)
 
