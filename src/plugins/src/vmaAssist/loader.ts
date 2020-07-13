@@ -1,4 +1,4 @@
-import loading from '@/components/libs/loading'
+import { Loader } from 'vma-vue-element'
 
 let requestCount = 0
 let timer: any
@@ -6,7 +6,7 @@ let timer: any
 export default {
   show() {
     requestCount++
-    loading.show()
+    Loader.show()
   },
   hide(time = 500) {
     if (--requestCount <= 0) {
@@ -14,7 +14,7 @@ export default {
         clearTimeout(timer)
       }
       timer = setTimeout(() => {
-        loading.hide()
+        Loader.hide()
       }, time)
     }
   }
