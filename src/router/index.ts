@@ -3,6 +3,9 @@ import VueRouter from 'vue-router'
 import commonRouterWrapper from './common'
 import loginRouterWrapper from './login'
 import frameRouterWrapper from './router'
+import * as frameTypes from './types'
+import * as loginTypes from './login/types'
+import * as commonTypes from './common/types'
 import { adminInfoSession, adminInfoSessionHasData } from '@/storage'
 // import LoginBO from '@/api/common/v1.0/definitions/LoginBO'
 import { RouterWrapper } from '@/utils'
@@ -25,7 +28,7 @@ const router = new VueRouter({
  * @export
  */
 export function redirectToHome() {
-  router.push({ name: frameRouterWrapper.types.SYSTEM })
+  router.push({ name: frameTypes.SYSTEM })
 }
 
 /**
@@ -34,7 +37,7 @@ export function redirectToHome() {
  * @export
  */
 export function redirectToLogin() {
-  router.push({ name: loginRouterWrapper.types.SYSTEM })
+  router.push({ name: loginTypes.SYSTEM })
 }
 
 /**
@@ -44,7 +47,7 @@ export function redirectToLogin() {
  */
 export function redirectToCommonMaintain() {
   router.push({
-    name: commonRouterWrapper.types.MAINTAIN
+    name: commonTypes.MAINTAIN
   })
 }
 

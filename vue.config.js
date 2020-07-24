@@ -1,9 +1,8 @@
 const path = require('path')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const {
-  cipher,
-  args
-} = require('vma-assist')
+  definePlugin
+} = require('vma-assist/dist/static/js/tools/vueCli')
 const postcssPxToRem = require('postcss-pxtorem')
 
 const config = {
@@ -43,17 +42,7 @@ module.exports = {
     }
   },
   chainWebpack: config => {
-    const profile = getProfile()
-    config.plugin('define')
-      .tap(args => {
-        const options = args[0]
-        const config = require('./config')(options['process.env'], profile)
-        args[0] = Object.assign({}, options, {
-          'process.env': config,
-          'process.config': cipher.encodeEnv(config)
-        })
-        return args
-      })
+    definePlugin(config.plugin('define'), require('./config'), process.env)
     config.resolve.alias
       .set('@static', resolve('public/static'))
   },
@@ -74,22 +63,4 @@ module.exports = {
       }
     }
   }
-}
-
-function getProfile() {
-  const NODE_ENV = process.env.NODE_ENV
-  let profile = NODE_ENV
-  if (NODE_ENV === 'production') {
-    let argv
-    try {
-      argv = JSON.parse(process.env.npm_config_argv).original.concat((process.env.npm_lifecycle_script || '').split(' ').slice(1))
-    } catch (ex) {
-      argv = process.argv
-    }
-    let argsMap = args(argv.slice(2))
-    if (argsMap.env) {
-      profile = argsMap.env
-    }
-  }
-  return profile
 }

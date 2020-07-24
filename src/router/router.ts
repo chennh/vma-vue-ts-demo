@@ -3,7 +3,7 @@ import commonRouter from './common'
 import loginRouter from './login'
 import { RouterWrapper } from '@/utils'
 
-export default new RouterWrapper(types, [
+export default new RouterWrapper([
   ...loginRouter.routes,
   ...commonRouter.routes,
   {

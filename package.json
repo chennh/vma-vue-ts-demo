@@ -7,19 +7,16 @@
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "api": "node build/api.js",
-    "electron:build": "vue-cli-service electron:build",
-    "electron:serve": "vue-cli-service electron:serve",
-    "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "api": "node build/api.js"
   },
   "main": "background.js",
   "dependencies": {
     "axios": "^0.18.0",
+    "core-js": "^2.6.11",
     "crypto-js": "^3.1.9-1",
     "element-ui": "2.12.0",
     "register-service-worker": "^1.0.0",
-    "vma-assist": "^1.0.1",
+    "vma-assist": "^1.0.4",
     "vma-design-scrm": "^1.0.11",
     "vma-vue-element": "^1.0.54",
     "vue": "^2.5.17",
@@ -30,21 +27,17 @@
     "vuex-class": "^0.3.1"
   },
   "devDependencies": {
-    "@types/electron-devtools-installer": "^2.0.2",
     "@types/uuid": "^3.4.6",
     "@vue/cli-plugin-babel": "^3.0.1",
     "@vue/cli-plugin-pwa": "^3.0.1",
     "@vue/cli-plugin-typescript": "^3.0.1",
     "@vue/cli-service": "^3.0.1",
     "compression-webpack-plugin": "^1.1.11",
-    "electron": "^9.0.0",
-    "electron-devtools-installer": "^3.1.0",
     "node-sass": "^4.9.0",
     "nunjucks": "^3.2.0",
     "postcss-pxtorem": "^4.0.1",
     "sass-loader": "^7.0.1",
     "typescript": "^3.0.0",
-    "vue-cli-plugin-electron-builder": "^2.0.0-rc.4",
     "vue-template-compiler": "^2.5.17"
   },
   "postcss": {
