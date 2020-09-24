@@ -4,6 +4,7 @@ import elementUIPlugin from './src/elementUI'
 import vmaDesignScrm from './src/vmaDesignScrm'
 import vmaElement from './src/vmaElement'
 import vueRouter from './src/vueRouter'
+import vueCompositionApi from './src/vueCompositionApi'
 import { fmt } from '@/utils'
 
 export default {
@@ -13,6 +14,7 @@ export default {
     Vue.use(vmaDesignScrm)
     Vue.use(vmaElement)
     Vue.use(vueRouter)
+    Vue.use(vueCompositionApi)
     Vue.prototype.fmt = fmt
   }
 }

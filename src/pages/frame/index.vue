@@ -59,10 +59,20 @@ import * as actionTypes from '@/store/actionTypes'
 
 @Component({
   components: {
-    UpdatePassword
-  }
+    UpdatePassword,
+  },
 })
 export default class Frame extends Vue {
+  private adminInfo = {}
+  private localLogo = ''
+  private loginInfo = loginInfo
+  private menuList = []
+  private activeMenuId = ''
+  private updatePasswordModule = {
+    visible: false,
+  }
+  private navigateToMenu(data: FrameMenu | null) {}
+
   // private loginInfo = loginInfo
   // // 当前激活的菜单
   // private activeMenuId = frameActiveMenuSession.get()
