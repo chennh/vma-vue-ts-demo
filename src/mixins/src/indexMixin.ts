@@ -58,7 +58,11 @@ export default class IndexMixin<T = any> extends Vue {
     // 数据
     list: [],
     // 选中数据
-    selection: []
+    selection: [],
+    // 是否正在执行http请求
+    loading: false,
+    // 列表是否渲染完成
+    renderCompleted: true
   }
 
   /**
@@ -88,6 +92,17 @@ export default class IndexMixin<T = any> extends Vue {
       })
     }
     return map
+  }
+
+  /**
+   * 刷新数据
+   * @param params
+   */
+  public refresh(params?: any) {
+    if (params) {
+      Object.assign(this.params, params)
+    }
+    this.search()
   }
 
   protected mounted(): void {
@@ -137,7 +152,7 @@ export default class IndexMixin<T = any> extends Vue {
    * @memberOf IndexMixin
    */
   protected apiGet(id: any) {
-    return this.api.detail({ id })
+    return (this.api.detail || this.api.get)({ id })
   }
 
   /**
@@ -218,7 +233,7 @@ export default class IndexMixin<T = any> extends Vue {
    * @memberOf IndexMixin
    */
   protected search(): void {
-    this.table.selection = []
+    this.clearTableSection()
     this.pageAdaptor(1)
   }
 
@@ -285,8 +300,11 @@ export default class IndexMixin<T = any> extends Vue {
   protected page(current: number = this.params.current, size: number = this.params.size): Promise<IPage<T>> {
     this.setParamsPage(current, size)
     const params = this.getParams()
+    this.table.loading = true
     return this.apiPage(params).then(page => {
       return this.resolvePage(page, params)
+    }).finally(() => {
+      this.table.loading = false
     })
   }
 
@@ -358,6 +376,7 @@ export default class IndexMixin<T = any> extends Vue {
    * @memberOf IndexMixin
    */
   protected setTable(list: any[]): void {
+    this.table.renderCompleted = false
     if (this.$refs.table) {
       (this.$refs.table as any).bodyWrapper.scrollTop = 0
     }
@@ -369,6 +388,7 @@ export default class IndexMixin<T = any> extends Vue {
           tableRef.toggleRowSelection(v, true)
         })
       }
+      this.table.renderCompleted = true
     })
   }
 

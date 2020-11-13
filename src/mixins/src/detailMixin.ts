@@ -13,9 +13,10 @@ export default class FormMixin extends Vue {
 
   public rules: object = {}
 
+  public renderCompleted = true
+
   @Watch('dataProp')
   protected onDataPropChange(val: any) {
-    debugger
     this.get()
   }
 
@@ -26,9 +27,13 @@ export default class FormMixin extends Vue {
   /**
    * data数据传递
    */
-  protected get(): void {
-    this.entity = Object.assign({}, this.entity, this.dataProp)
+  protected get(dataProp = this.dataProp): void {
+    this.renderCompleted = false
+    this.entity = Object.assign({}, this.entity, dataProp)
     this.afterGet(this.entity)
+    this.$nextTick(() => {
+      this.renderCompleted = true
+    })
   }
 
   /**

@@ -21,6 +21,8 @@ export default class FormMixin extends Vue {
   // 校验规则
   public rules: object = {}
 
+  public renderCompleted = false
+
   /**
    * 表单校验
    * @returns {Promise<boolean>}
@@ -113,9 +115,13 @@ export default class FormMixin extends Vue {
    * @protected
    * @memberOf FormMixin
    */
-  protected get(): void {
-    this.entity = Object.assign({}, this.entity, this.dataProp)
+  protected get(dataProp = this.dataProp): void {
+    this.renderCompleted = false
+    this.entity = Object.assign({}, this.entity, dataProp)
     this.afterGet(this.entity)
+    this.$nextTick(() => {
+      this.renderCompleted = true
+    })
   }
 
   /**
